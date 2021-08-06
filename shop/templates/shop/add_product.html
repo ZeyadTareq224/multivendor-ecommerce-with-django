@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+Product-Page
+{% endblock title %}
+{% block content %}
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{product_form|crispy}}
+    <div id="div_id_image" class="form-group">
+        <label for="id_image" class=" requiredField">
+            Image<span class="asteriskField">*</span>
+        </label>
+        <div class="">
+            <input multiple type="file" name="images" accept="image/*" class="clearablefileinput form-control-file" required id="id_image">
+        </div>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="button is-dark text-is-white">Update</button>
+    </form>
+{% endblock content %}
+    

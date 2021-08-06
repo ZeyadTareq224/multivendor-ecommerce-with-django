@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+Product-Page
+{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/shop.css' %}">
+
+<section class="panel">
+    <h3 class="card-title">{{ product.product_name }} - offered by:{{product.vendor.shop_name}}</h3>
+    
+    <div class="panel-body ">
+        <center>
+            <span class="card-title">
+                <strong>Category:</strong><a class="tag is-dark" href="#">{{ product.category.name }}</a>
+            </span>
+            <hr>
+            <div class="col-md-6">
+                <div class="pro-img-details">
+                    <a href="{{ main_image.image.url }}">
+                        <img src="{{ product.get_product_main_image.image.url }}" alt="">
+                    </a>
+                </div>
+                <div class="pro-img-list">
+                    {% for image in product_images %}
+                    <a href="{{ image.image.url }}">
+                        <img style="width: 115px; height: 100;" src="{{ image.image.url }}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </center>
+        <div class="card">
+            <h4 class="pro-d-title">
+                <h4 class="title card-header">
+                    <strong>{{ product.product_name }} - ${{product.price}}</strong>
+                </h4>
+                
+            </h4>
+            <p class="card-body">
+                {{ product.product_description }}
+            </p>
+            <div class="card-footer">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input type="number" name="quantity" value="1" class="input" min="1">
+                        </div>
+                        
+                        <div class="control">
+                            <button class="button is-dark is-uppercase">Add to cart</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            
+        </div>
+    </div>
+</section>
+
+
+
+
+<hr>
+
+<header>
+    <h2>Genshop - Similar Products</h2> 
+</header>
+
+<div class="cards-8 section-gray">
+    <div class="container">
+        <div class="row">
+            {% for product in similar_products %}
+            <div class="col-md-3">
+                <div class="card card-product">
+                    <div class="img-fluid">
+                        <a href="#"><img class="img-fluid" src="{{ product.get_product_main_image.image.url }}"> </a>
+                    </div>
+                    <div class="table">
+                        <h6 class="category text-rose">{{ product.category.name }}</h6>
+                        <h4 class="card-caption">
+                            <a href="#">{{ product.product_name }}</a>
+                        </h4>
+                        <div class="card-description">{{ product.product_description }}</div>
+                        <div class="ftr">
+                            <div class="price">
+                                <h4>${{product.price}}</h4> </div>
+                                <div class="stats">
+                                    <a href="{% url 'product_detail' product.id %}" class="button is-black has-text-white" >View Product</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endblock content %}

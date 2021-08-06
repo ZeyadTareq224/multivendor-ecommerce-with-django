@@ -1,0 +1,131 @@
+{% extends 'core/base.html' %}
+{% block title %}
+Vendor-Shop
+{% endblock title %}
+
+{% block extra_headers %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock extra_headers %}
+
+
+{% block content %}
+
+<center class="card">
+    <h1>{{vendor.shop_name}}</h1>
+    <h4>{{vendor}}</h4>
+    <h6>{{vendor.shop_description}}</h6>
+    <strong>My balance: </strong>$ {{ vendor.get_balance }} <br>
+    <strong>My paid amount: </strong>$ {{ vendor.get_paid_amount }} <br>
+    <hr>
+    <a class="button is-info has-text-white" href="{% url 'vendor_update' vendor.id %}"> Update my information</a>
+    <a href="{% url 'add_product' %}" class="button is-dark has-text-white">Add Product</a>
+</center>
+<br>
+<table id="example" class=" table table-striped table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>In Stock</th>
+            <th>Added at</th>
+            <th>Take Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in vendor_products %}
+        <tr>
+            <td>{{ product.product_name }}</td>
+            <td><img src="{{ product.get_product_main_image.image.url }}" class="img-fluid" style="width: 120px; height: 100px;"  alt="product image"></td>
+            <td>{{ product.product_description }}</td>
+            <td>${{ product.price }}</td>
+            <td>{{ product.in_stock }}</td>
+            <td>{{ product.created_at }}</td>
+            <td>
+                <a href=""><span class="fas fa-edit"></span></a>
+                <a href="" class="text-danger"><span class="fas fa-trash"></span></a>
+            </td>
+        </tr>
+        {% endfor %}
+        
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>In Stock</th>
+            <th>Added at</th>
+            <th>Take Action</th>
+        </tr>
+    </tfoot>
+</table>
+<hr>
+<div class="box">
+    <h2 class="is-size-3 mb-4">My orders</h2>
+
+    {% if vendor_orders %}
+        {% for order in vendor_orders %}
+            <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                <div class="columns is-multiline">
+                    <div class="column is-6">
+                        <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3>
+                    </div>
+
+                    <div class="column is-12">
+                        <b>Name:</b> {{ order.full_name }}<br>
+                        <b>Address:</b> {{ order.address }}<br>
+                        <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
+                        <b>E-mail:</b> {{ order.email }}<br>
+                        <b>Phone:</b> {{ order.phone }}
+
+                        <table class="table is-fullwidth mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Paid</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.items.all %}
+                                    {% if item.vendor == request.user.vendor %}
+                                        <tr>
+                                            <td>{{ item.product.title }}</td>
+                                            <td>${{ item.product.price }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+                                            <td>${{ item.get_total_price }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+<script>
+    $(document).ready(function() {
+    $('#example').DataTable();
+    responsive: true
+    new $.fn.dataTable.FixedHeader( table );
+} );
+</script>
+
+{% endblock content %}

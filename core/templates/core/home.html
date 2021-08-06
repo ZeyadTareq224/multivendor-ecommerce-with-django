@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Welcome
+{% endblock title %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center justify-content-center">
+            <div class="col-lg-8 col-xl-7 col-xxl-6">
+                <div class="my-5 text-center text-xl-start">
+                    <h1 class="display-5 fw-bolder text-white mb-2">Genshop is a multivendor ecommerce platform</h1>
+                    <p class="lead fw-normal text-white-50 mb-4">Built using Django as backend and Bootsrap 4 as frontend by me Ziyad who's a fresh computer sceince gradute with 2 years of experience in building websites in many frameworks but mainly focusing on Django. <a href="https://github.com/ZeyadTareq224">Check out my github.</a></p>
+
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3 m-2" href="{% url 'products' %}">Get Started</a>
+                        <a class="btn btn-outline-light btn-lg px-4 m-2" href="#About">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://juliencoquet.com/wp-content/uploads/2020/01/ecommerce_banner.png" alt="..." /></div>
+        </div>
+    </div>
+</header>
+{% endblock content %}
