@@ -5,7 +5,7 @@ from .models import Product
 class Cart(object):
     def __init__(self, request):
         self.session = request.session
-        cart = self.session.get(settings.CART_SESSION_ID)
+        cart = self.session.get(settings.CART_SESSION_ID)        
 
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
@@ -28,7 +28,7 @@ class Cart(object):
         product_id = str(product_id)
         
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, 'id': product_id}
+            self.cart[product_id] = {'quantity': quantity, 'id': product_id}
         
         if update_quantity:
             self.cart[product_id]['quantity'] += int(quantity)

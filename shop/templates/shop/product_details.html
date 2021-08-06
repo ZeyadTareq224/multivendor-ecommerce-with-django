@@ -43,7 +43,7 @@ Product-Page
                 {{ product.product_description }}
             </p>
             <div class="card-footer">
-                <form method="post">
+                <form method="POST" action="">
                     {% csrf_token %}
                     
                     <div class="field has-addons">
